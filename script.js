@@ -1,7 +1,7 @@
 // Navigation scroll effect
 const navbar = document.querySelector('.navbar');
 const navLinks = document.querySelectorAll('.nav-link');
-const sections = document.querySelectorAll('section');
+const sections = document.querySelectorAll('section:not([hidden])');
 
 window.addEventListener('scroll', () => {
     // Navbar background on scroll
