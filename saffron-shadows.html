@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <title>SAFFRON Shadow Gallery | Jinlin Li</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #e94560;
+            --accent-light: #ff6b6b;
+            --text-primary: #ffffff;
+            --text-secondary: #b8b8c8;
+            --bg-dark: #0f0f1a;
+            --bg-card: rgba(255, 255, 255, 0.06);
+            --border-soft: rgba(255, 255, 255, 0.12);
+            --shadow: 0 18px 55px rgba(0, 0, 0, 0.36);
+            --transition: all 0.25s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            background:
+                radial-gradient(circle at 15% 8%, rgba(233, 69, 96, 0.18), transparent 28%),
+                radial-gradient(circle at 85% 10%, rgba(79, 124, 255, 0.14), transparent 26%),
+                radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                radial-gradient(1px 1px at 20px 30px, rgba(255, 255, 255, 0.55), transparent),
+                radial-gradient(1px 1px at 80px 130px, rgba(255, 255, 255, 0.4), transparent),
+                radial-gradient(2px 2px at 160px 70px, rgba(255, 255, 255, 0.45), transparent),
+                radial-gradient(1px 1px at 220px 180px, rgba(255, 255, 255, 0.4), transparent);
+            background-size: 260px 260px;
+            opacity: 0.7;
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            width: min(1280px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 72px 0 64px;
+        }
+
+        .hero {
+            max-width: 880px;
+            margin-bottom: 42px;
+        }
+
+        .eyebrow {
+            margin-bottom: 14px;
+            color: var(--accent-light);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin-bottom: 16px;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.4rem, 6vw, 4.7rem);
+            line-height: 1.04;
+            letter-spacing: 0;
+        }
+
+        .intro {
+            max-width: 720px;
+            color: var(--text-secondary);
+            font-size: clamp(1rem, 1.8vw, 1.15rem);
+        }
+
+        .gallery-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .meta-pill {
+            display: inline-flex;
+            align-items: center;
+            min-height: 34px;
+            padding: 7px 13px;
+            border: 1px solid var(--border-soft);
+            border-radius: 999px;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.05);
+            font-size: 0.86rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
+            align-items: start;
+        }
+
+        .gif-card {
+            display: block;
+            width: 100%;
+            overflow: hidden;
+            border: 1px solid var(--border-soft);
+            border-radius: 18px;
+            color: inherit;
+            background: var(--bg-card);
+            box-shadow: 0 12px 34px rgba(0, 0, 0, 0.22);
+            cursor: pointer;
+            transition: var(--transition);
+            appearance: none;
+            -webkit-appearance: none;
+            text-align: left;
+            font: inherit;
+        }
+
+        .gif-card:hover,
+        .gif-card:focus-visible {
+            border-color: rgba(233, 69, 96, 0.65);
+            box-shadow: var(--shadow);
+            transform: translateY(-5px);
+            outline: none;
+        }
+
+        .gif-frame {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .gif-frame img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .gif-frame::after {
+            content: 'View';
+            position: absolute;
+            right: 12px;
+            bottom: 12px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            color: white;
+            background: rgba(15, 15, 26, 0.72);
+            font-size: 0.74rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: var(--transition);
+        }
+
+        .gif-card:hover .gif-frame::after,
+        .gif-card:focus-visible .gif-frame::after {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gif-caption {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 16px 16px 17px;
+        }
+
+        .target-name {
+            min-width: 0;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .band {
+            flex: 0 0 auto;
+            min-width: 42px;
+            padding: 4px 9px;
+            border-radius: 999px;
+            color: white;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .band sub {
+            font-size: 0.65em;
+            line-height: 0;
+        }
+
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 28px;
+            background: rgba(5, 7, 16, 0.86);
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox.is-open {
+            display: flex;
+        }
+
+        .lightbox-panel {
+            position: relative;
+            width: min(960px, 100%);
+            max-height: calc(100vh - 56px);
+            overflow: auto;
+            border: 1px solid var(--border-soft);
+            border-radius: 22px;
+            background: rgba(15, 15, 26, 0.96);
+            box-shadow: var(--shadow);
+        }
+
+        .lightbox-image-wrap {
+            background: rgba(0, 0, 0, 0.32);
+        }
+
+        .lightbox-image {
+            display: block;
+            width: min(100%, 760px);
+            height: auto;
+            margin: 0 auto;
+            aspect-ratio: 1 / 1;
+            object-fit: contain;
+        }
+
+        .lightbox-caption {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 22px 22px;
+        }
+
+        .lightbox-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            line-height: 1.1;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 42px;
+            height: 42px;
+            border: 1px solid var(--border-soft);
+            border-radius: 50%;
+            color: white;
+            background: rgba(15, 15, 26, 0.76);
+            cursor: pointer;
+            font-size: 1.7rem;
+            line-height: 1;
+            transition: var(--transition);
+        }
+
+        .lightbox-close:hover,
+        .lightbox-close:focus-visible {
+            background: var(--accent-color);
+            outline: none;
+        }
+
+        @media (max-width: 760px) {
+            .page {
+                width: min(100% - 28px, 1280px);
+                padding-top: 44px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 14px;
+            }
+
+            .gif-caption {
+                padding: 12px;
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .target-name {
+                white-space: normal;
+                font-size: 0.95rem;
+            }
+
+            .lightbox {
+                padding: 14px;
+            }
+
+            .lightbox-caption {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <header class="hero">
+            <p class="eyebrow">SAFFRON shadow gallery</p>
+            <h1>Time-variable shadow animations</h1>
+            <p class="intro">
+                A private-link gallery for browsing SAFFRON shadow GIFs across targets and observing bands.
+            </p>
+            <div class="gallery-meta" aria-label="Gallery metadata">
+                <span class="meta-pill">30 animations</span>
+                <span class="meta-pill">600 x 600 px</span>
+                <span class="meta-pill">Unlinked public page</span>
+            </div>
+        </header>
+
+        <section class="gallery-grid" id="gallery" aria-label="SAFFRON shadow GIF gallery"></section>
+    </main>
+
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+        <div class="lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="lightbox-title">
+            <button class="lightbox-close" type="button" aria-label="Close preview">&times;</button>
+            <div class="lightbox-image-wrap">
+                <img class="lightbox-image" id="lightbox-image" src="" alt="">
+            </div>
+            <div class="lightbox-caption">
+                <h2 class="lightbox-title" id="lightbox-title"></h2>
+                <span class="band" id="lightbox-band"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const gifFiles = [
+            'AB_Aur_H.gif',
+            'AB_Aur_K.gif',
+            'AT_Pyx_H.gif',
+            'CQ_Tau_J.gif',
+            'DG_CrA_H.gif',
+            'DO_Tau_H.gif',
+            'DR_Tau_H.gif',
+            'DoAr_44_H.gif',
+            'FU_Ori_H.gif',
+            'GW_Ori_H.gif',
+            'HD_100453_J.gif',
+            'HD_100546_J.gif',
+            'HD_100546_K.gif',
+            'HD_142527_H.gif',
+            'HD_143006_K.gif',
+            'HD_34282_J.gif',
+            'HD_34282_K.gif',
+            'HD_34700_H.gif',
+            'LkHa_330_H.gif',
+            'MWC_758_K.gif',
+            'MWC_758_Y.gif',
+            'RX_J1842_H.gif',
+            'SAO_206462_J.gif',
+            'SR_21_K.gif',
+            'UX_Tau_H.gif',
+            'V1247_Ori_H.gif',
+            'V1247_Ori_K.gif',
+            'V599_Ori_H.gif',
+            'WW_Cha_H.gif',
+            'XZ_Tau_H.gif'
+        ];
+
+        const gallery = document.getElementById('gallery');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightbox-image');
+        const lightboxTitle = document.getElementById('lightbox-title');
+        const lightboxBand = document.getElementById('lightbox-band');
+        const closeButton = lightbox.querySelector('.lightbox-close');
+
+        function parseGifFile(filename) {
+            const stem = filename.replace(/\.gif$/i, '');
+            const parts = stem.split('_');
+            const bandCode = parts.pop();
+            const target = parts.join(' ');
+            const isKs = bandCode === 'K';
+
+            return {
+                filename,
+                target,
+                bandHtml: isKs ? 'K<sub>s</sub>' : bandCode,
+                bandText: isKs ? 'K_s' : bandCode,
+                src: `SAFFRON_shadow_gifs/${filename}`
+            };
+        }
+
+        function renderCard(item) {
+            const card = document.createElement('button');
+            card.className = 'gif-card';
+            card.type = 'button';
+            card.setAttribute('aria-label', `Open ${item.target}, ${item.bandText} band animation`);
+            card.innerHTML = `
+                <div class="gif-frame">
+                    <img src="${item.src}" alt="${item.target} ${item.bandText} band shadow animation" loading="lazy">
+                </div>
+                <div class="gif-caption">
+                    <span class="target-name">${item.target}</span>
+                    <span class="band" aria-label="${item.bandText} band">${item.bandHtml}</span>
+                </div>
+            `;
+            card.addEventListener('click', () => openLightbox(item));
+            return card;
+        }
+
+        function openLightbox(item) {
+            lightboxImage.src = item.src;
+            lightboxImage.alt = `${item.target} ${item.bandText} band shadow animation`;
+            lightboxTitle.textContent = item.target;
+            lightboxBand.innerHTML = item.bandHtml;
+            lightboxBand.setAttribute('aria-label', `${item.bandText} band`);
+            lightbox.classList.add('is-open');
+            lightbox.setAttribute('aria-hidden', 'false');
+            closeButton.focus();
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('is-open');
+            lightbox.setAttribute('aria-hidden', 'true');
+            lightboxImage.src = '';
+        }
+
+        gifFiles
+            .map(parseGifFile)
+            .forEach(item => gallery.appendChild(renderCard(item)));
+
+        closeButton.addEventListener('click', closeLightbox);
+
+        lightbox.addEventListener('click', event => {
+            if (event.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && lightbox.classList.contains('is-open')) {
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>
